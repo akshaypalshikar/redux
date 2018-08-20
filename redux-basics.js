@@ -7,10 +7,27 @@ const initialState = {
 
 //reducer
 const rootReducer = (state = initialState, action) => {
-    return state;
+    let newState = { ...state };
+    switch (action.type) {
+        case 'INCREMENT_COUNTER':
+            newState.counter++;
+            break;
+        case 'ADD_COUNTER':
+            newState.counter += action.value;
+            break;
+        default:
+    }
+    return newState;
 };
 
 //store
 const store = createStore(rootReducer);
-console.log(store.getState());
 
+//suscription
+store.subscribe(() => {
+    console.log('store.subscribe', store.getState());
+});
+
+//dispatching action
+store.dispatch({ type: 'INCREMENT_COUNTER' });
+store.dispatch({ type: 'ADD_COUNTER', value: 10 });
