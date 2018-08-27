@@ -3,17 +3,23 @@ const createStore = redux.createStore;
 
 const initialState = {
     counter: 0
-}
+};
 
 //reducer
 const rootReducer = (state = initialState, action) => {
     let newState = { ...state };
     switch (action.type) {
-        case 'INCREMENT_COUNTER':
+        case 'INC':
             newState.counter++;
             break;
-        case 'ADD_COUNTER':
-            newState.counter += action.value;
+        case 'DESC':
+            newState.counter--;
+            break;
+        case 'ADD':
+            newState.counter += action.payload.number;
+            break;
+        case 'SUBTRACT':
+            newState.counter -= action.payload.number;
             break;
         default:
     }
@@ -23,11 +29,24 @@ const rootReducer = (state = initialState, action) => {
 //store
 const store = createStore(rootReducer);
 
-//suscription
+//subscription
 store.subscribe(() => {
-    console.log('store.subscribe', store.getState());
+    console.log('store.subscribe-callback state :', store.getState());
 });
 
-//dispatching action
-store.dispatch({ type: 'INCREMENT_COUNTER' });
-store.dispatch({ type: 'ADD_COUNTER', value: 10 });
+//dispatcher
+store.dispatch({ type: 'INC' });
+
+store.dispatch({
+    type: 'ADD',
+    payload: { number: 5 }
+});
+
+store.dispatch({
+    type: 'SUBTRACT', payload: {
+        number: 5
+    }
+});
+
+
+store.dispatch({ type: 'DESC' });
